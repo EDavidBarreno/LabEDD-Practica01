@@ -30,7 +30,7 @@ void mostrarMenuPrincipal() {
                     mostrarMenuPrincipalSolitario();
                     break;
                 case 2:
-                    std::cout << "Registrándote...\n";
+                    std::cout << "Hecho por 201830233...\n";
                     break;
                 case 3:
                     std::cout << "\n\n   ------------------------------------------------\n";

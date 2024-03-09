@@ -99,23 +99,28 @@ void exchange(Carta cartas[], int i, int j);
 //Cambiar una posicion de carta por otra, usada en la funcion lecturaEjecutarOrden
 void exchangePosicion(Pila pila[], int a, int b);
 
-void mostrarPilas(Pila pila[]) {
-    printf("\n+++++++++++++++++++++++\n");
-    printf("Descarte:     0:"); printStack(pila, 0);
-    printf("Reserva:      1:[*]");
-    printf("\n+++++++++++++++++++++++\n\n");
-    printf("Pila de Juego 2:"); printStack(pila, 2);
-    printf("Pila de Juego 3:"); printStack(pila, 3);
-    printf("Pila de Juego 4:"); printStack(pila, 4);
-    printf("Pila de juego 5:"); printStack(pila, 5);
-    printf("Pila de Juego 6:"); printStack(pila, 6);
-    printf("Pila de Juego 7:"); printStack(pila, 7);
-    printf("Pila de Juego 8:"); printStack(pila, 8);
-    printf("\n+++++++++++++++++++++++\n");
-    printf("Diamantes  (D)9 :"); printStack(pila, 9);
-    printf("Corazones  (C)10:"); printStack(pila, 10);
-    printf("Trebol     (T)11:"); printStack(pila, 11);
-    printf("Espadas    (E)12:"); printStack(pila, 12);
+const int NUM_PILAS = 9; // Incluye las pilas de juego y los palos
+const int TAM_PILA = 13; // Tamaño de cada pila (0 a 12)
+
+void mostrarPilas(std::vector<std::vector<int>>& pilas) {
+    std::cout << "\n+++++++++++++++++++++++\n";
+    std::cout << "Descarte:     0:" << pilas[0][0] << '\n';
+    std::cout << "Reserva:      1:[*]\n";
+    std::cout << "\n+++++++++++++++++++++++\n\n";
+
+    for (int i = 2; i < NUM_PILAS; ++i) {
+        std::cout << "Pila de Juego " << i << ": ";
+        for (int j = 0; j < TAM_PILA; ++j) {
+            std::cout << pilas[i][j] << ' ';
+        }
+        std::cout << '\n';
+    }
+
+    std::cout << "\n+++++++++++++++++++++++\n";
+    std::cout << "Diamantes  (D)9 : " << pilas[9][0] << '\n';
+    std::cout << "Corazones  (C)10: " << pilas[10][0] << '\n';
+    std::cout << "Trebol     (T)11: " << pilas[11][0] << '\n';
+    std::cout << "Espadas    (E)12: " << pilas[12][0] << '\n';
 }
 int jugadaValidaPilasDeJuego(Pila pila[], int o, int d) {
     //Evitar casos extremos, evitar que se quite desde pila 1 (reserva).

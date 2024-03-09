@@ -30,7 +30,7 @@ void mostrarMenuPrincipalSolitario() {
                     mostrarJuegoSolitarioC();
                     break;
                 case 2:
-                    cout << "Registrándote...\n";
+                    cout << "Insertar Instrucciones...\n";
                     break;
                 case 3:
                     cout << "\n\n   ----------------------------------------\n";

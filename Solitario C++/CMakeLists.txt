@@ -10,4 +10,5 @@ add_executable(Solitario_C__ main.cpp
         menuPrincipalSolitario.cpp
         menuPrincipalSolitario.h
         juegoSolitarioC.cpp
-        juegoSolitarioC.h)
+        juegoSolitarioC.h
+)

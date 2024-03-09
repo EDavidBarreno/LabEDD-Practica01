@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Solitario C++/cmake-build-debug"
+			"value" : "c:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Practica01/LabEDD-Practica01/Solitario C++/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Solitario C++/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Practica01/LabEDD-Practica01/Solitario C++/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -647,7 +647,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Solitario C++"
+			"value" : "C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Practica01/LabEDD-Practica01/Solitario C++"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1279,7 +1279,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Solitario C++/cmake-build-debug"
+			"value" : "C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Practica01/LabEDD-Practica01/Solitario C++/cmake-build-debug"
 		},
 		{
 			"name" : "Solitario_C___IS_TOP_LEVEL",
@@ -1303,7 +1303,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Solitario C++"
+			"value" : "C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Practica01/LabEDD-Practica01/Solitario C++"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",

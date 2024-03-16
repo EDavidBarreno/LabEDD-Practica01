@@ -1,5 +1,6 @@
 #include "juegoSolitarioC.h"
 #include <iostream>
+#include <string>
 #include <algorithm> //Solo se uso para ordenar las cartas al azar
 #include <random>  //Solo se uso para ordenar las cartas al azar
 
@@ -88,6 +89,7 @@ void insertarPilaBarajaVisibleD(NodoBarajaVisibleD *&, string);
 void insertarPilaBarajaVisibleE(NodoBarajaVisibleE *&, string);
 void insertarPilaBarajaVisibleF(NodoBarajaVisibleF *&, string);
 void insertarPilaBarajaVisibleG(NodoBarajaVisibleG *&, string);
+
 
 void mostrarJuegoSolitarioC() {
     string cartasOrigen[] = {"01-<3-R", "02-<3-R", "03-<3-R", "04-<3-R", "05-<3-R","06-<3-R","07-<3-R","08-<3-R","09-<3-R","10-<3-R"," J-<3-R"," Q-<3-R"," K-<3-R",
@@ -296,15 +298,6 @@ void mostrarJuegoSolitarioC() {
                 }
             }
         }
-
-
-
-        /*if (!colaBarajaInicial_vacia(frenteBarajaInicial)) {
-            cout << finBarajaInicial->barajaInicial + "  |  " + finBarajaInicial2->barajaInicial2 + "\n";
-        } else {
-            cout <<"Sin cartas |  " + finBarajaInicial2->barajaInicial2 + "\n";
-        }*/
-        //cout<<finBarajaInicial->barajaInicial+"  |  "+finBarajaInicial2->barajaInicial2+"\n";
         cout<< "---------------------------------------------------------------------------------\n";
         for (int i = 0; i < 7; ++i) {
             for (int j = 0; j < 7; ++j) {
@@ -313,12 +306,12 @@ void mostrarJuegoSolitarioC() {
             cout << endl;
         }
         cout<< "---------------------------------------------------------------------------------\n\n";
-        cout<< "1--- Siguiente carta.\n";
-        cout<< "2--- Insertar carta.\n";
-        cout<< "3--- Mover carta.\n";
-        cout<< "4--- Regresar movimiento.\n";
-        cout<< "5--- Pista.\n";
-        cout<< "6--- RENDIRSE.\n\n";
+        cout<< "   1--- Siguiente carta.\n";
+        cout<< "   2--- Insertar carta.\n";
+        cout<< "   3--- Mover carta.\n";
+        cout<< "   4--- Regresar movimiento.\n";
+        cout<< "   5--- Pista.\n";
+        cout<< "   6--- RENDIRSE.\n\n";
         cout<< "---------------------------------------------------------------------------------\n";
         cout<< "Su respuesta es: --->";
 
@@ -335,7 +328,90 @@ void mostrarJuegoSolitarioC() {
                     eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
                     break;
                 case 2:
-                    cout << "Insertar Instrucciones...\n";
+                    do {
+                        cout<< "---------------------------------------------------------------------------------\n";
+                        cout << "   ---   A continuacion seleccione una posicion en donde\n";
+                        cout << "   ---   desea insertar la carta.\n";
+                        cout<< "---------------------------------------------------------------------------------\n";
+                        cout << "   1--- Insertar en la Columna -- A -- \n";
+                        cout << "   2--- Insertar en la Columna -- B -- \n";
+                        cout << "   3--- Insertar en la Columna -- C -- \n";
+                        cout << "   4--- Insertar en la Columna -- D -- \n";
+                        cout << "   5--- Insertar en la Columna -- E -- \n";
+                        cout << "   6--- Insertar en la Columna -- F -- \n";
+                        cout << "   7--- Insertar en la Columna -- G -- \n";
+                        cout << "   8--- CANCELAR OPCION \n";
+                        cout<< "---------------------------------------------------------------------------------\n";
+                        cout << "Su respuesta es: --->";
+
+                        try {
+                            std::cin >> opcion;
+
+                            if (std::cin.fail()) {
+                                throw std::invalid_argument("ERROR --- Ingresar solo numeros del 1 al 8.");
+                            }
+
+                            switch (opcion) {
+                                case 1:
+                                    if(0<=visivleA){
+                                        int abc1 = visivleA+ocultoA;
+                                        string cadena = finBarajaInicial->barajaInicial;
+                                        size_t pos = cadena.find("-");
+                                        string primer_valor = cadena.substr(0, pos);
+                                        int a;
+                                        size_t posa = cadena.find_last_of("-");
+                                        string ultimo_valor = cadena.substr(posa + 1);
+
+
+                                        string cadena2 = matrizA[0][abc1-1];
+                                        size_t pos2 = cadena2.find("-");
+                                        string primer_valor2 = cadena2.substr(0, pos);
+                                        cout << "El primer valor es: " << primer_valor <<endl;
+                                        cout << "El primer valor es: " << primer_valor2 <<endl;
+                                        int b;
+                                        size_t posb = cadena2.find_last_of("-");
+                                        string ultimo_valor2 = cadena2.substr(posb + 1);
+
+
+                                        a = stoi(primer_valor);
+                                        b = stoi(primer_valor2);
+
+                                        // Comparación de los valores enteros
+                                        if (a > b || primer_valor ==" J" & primer_valor2 ==" K") {
+                                            cout<<"No se puede insertar aca, por favor elija otra opcion";
+                                        }else{if(a<b & ultimo_valor!= ultimo_valor2 || primer_valor == " J" & primer_valor2 ==" Q" & ultimo_valor!= ultimo_valor2 || primer_valor == " Q" & primer_valor2 ==" K" & ultimo_valor!= ultimo_valor2){
+                                            cout<<"si se puede";
+                                        }else{
+
+                                        }
+                                        }
+
+                                    }
+                                    break;
+                                case 2:
+                                    break;
+                                case 3:
+                                    break;
+                                case 4:
+                                    break;
+                                case 5:
+                                    break;
+                                case 6:
+                                    break;
+                                case 7:
+                                    break;
+                                case 8:
+                                    break;
+                                default:
+                                    cout << "ERROR --- Ingresar solo numeros del 1 al 8.\n";
+                            }
+                        } catch (const std::invalid_argument& e) {
+                            std::cout << e.what() << "\n";
+                            std::cin.clear();
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        }
+
+                    } while (opcion != 8);
 
                     break;
                 case 3:
@@ -367,6 +443,7 @@ void mostrarJuegoSolitarioC() {
 
 
 }
+
 
 void insertarColaBarajaInicial(NodoBarajaInicial *&frenteBarajaInicial, NodoBarajaInicial *&finBarajaInicial, string nBarajaInicial){
     NodoBarajaInicial *nuevoNodoBarajaInicial = new NodoBarajaInicial();
@@ -496,3 +573,4 @@ void insertarPilaBarajaVisibleG(NodoBarajaVisibleG *&pilaNodoBarajaVisibleG, str
     nuevoNodoBarajaVisivleG->siguienteBarajaVisibleG = pilaNodoBarajaVisibleG;
     pilaNodoBarajaVisibleG = nuevoNodoBarajaVisivleG;
 }
+

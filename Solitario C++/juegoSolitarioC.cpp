@@ -1,466 +1,99 @@
 #include "juegoSolitarioC.h"
 #include <iostream>
-#include <algorithm>
-#include <random>
-#include <stack>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#define MAX 60
-
-typedef struct {
-    char paloCarta;//Diamantes, Corazones, Trebol, Espadas.
-    int color;//0 : color negro, 1 : color rojo
-    int estado;//0: cerrado, 1: abierto
-    int numeroCarta;//1, 2, ..., 13
-} Carta;
-
-Carta V[MAX]; //Vector contenedor
-
-typedef struct {
-    Carta c;
-    int base; //base de la pila.
-    int top;//top de la pila.
-}Pila;
-
-//Creacion de las 13 pilas, y una pila para la condicion limite base(n+1) == MAX
-Pila pilas[14];
-
-//menu del juego
-void menuPrincipal(Pila pila[]);
-
-//Dentro del juego, controla las jugadas, etc.
-void menuJuego(Pila pila[]);//*****
-
-//reglasDelJuego
-void reglasDelJuego(void);
-
-//Comandos a usar en el juego
-void comandosDelJuego(void);
-
-//creacion de las pilas (pilas de juego, reserva, descarte y  salida)
-void crearCartas(Carta cartas[]);
-
-//Repartir la mesa con las cartas en la forma predeterminada
-void repartirPilas(Pila pila[]);
-
-//barajar cartas.
-void barajar(Carta aux[]);
-
-//mostrar carta
-void mostrarCarta(Pila pila[], int j);
-
-//jugada valida
-int jugadaValidaPilasDeJuego(Pila pila[], int o, int d);//*
-
-int jugadaValidaPilasDeSalida(Pila pila[], int o, int d);//*
-
-//Leer las opciones y ejecutar solo si es valida
-int lecturaEjecutarOrden(Pila pila[], int * contador);
-
-//Apilar un elemento a la pila
-void push(Pila pila[], int i, Carta x);
-
-void pushVariasCartas(Pila pila[], int o, int d, int c);
-
-//Identificar carta en una pila, para saber que cantidad de cartas mover.
-int identificarCartaNoTop(Pila pila[], int o, int d, int c);
-
-//Desapilar un elemento a la pila
-Carta pop(Pila pila[], int i, Carta x);
-
-//Crear los topes, crear base(i) y tope(i)
-void crearCotas(Pila pila[]);
-
-//Desbordamiento
-void overflowLocal(Pila pila[], int i);
-
-//Imprimir pila
-void printStack(Pila pila[], int i);
-
-//Mostrar las pila de juego
-void mostrarPilas(Pila pila[]);
-
-//Retornar 1 si la pila esta llena
-int pilaLLena(Pila pila[], int i);
-
-//Retorna la longitud de la pila
-int sizePila(Pila pila[], int i);
-
-//Retorna 1 si la pila esta vacia
-int pilaVacia(Pila pila[], int i);
-
-//Retorna 1 si se gano la partida
-int gano(Pila pila[]);
-
-//Intercambia carta[i] por carta[j], usado en la funcion barajar
-void exchange(Carta cartas[], int i, int j);
-
-//Cambiar una posicion de carta por otra, usada en la funcion lecturaEjecutarOrden
-void exchangePosicion(Pila pila[], int a, int b);
-
-const int NUM_PILAS = 9; // Incluye las pilas de juego y los palos
-const int TAM_PILA = 13; // Tamaño de cada pila (0 a 12)
-
-void mostrarPilas(std::vector<std::vector<int>>& pilas) {
-    std::cout << "\n+++++++++++++++++++++++\n";
-    std::cout << "Descarte:     0:" << pilas[0][0] << '\n';
-    std::cout << "Reserva:      1:[*]\n";
-    std::cout << "\n+++++++++++++++++++++++\n\n";
-
-    for (int i = 2; i < NUM_PILAS; ++i) {
-        std::cout << "Pila de Juego " << i << ": ";
-        for (int j = 0; j < TAM_PILA; ++j) {
-            std::cout << pilas[i][j] << ' ';
-        }
-        std::cout << '\n';
-    }
-
-    std::cout << "\n+++++++++++++++++++++++\n";
-    std::cout << "Diamantes  (D)9 : " << pilas[9][0] << '\n';
-    std::cout << "Corazones  (C)10: " << pilas[10][0] << '\n';
-    std::cout << "Trebol     (T)11: " << pilas[11][0] << '\n';
-    std::cout << "Espadas    (E)12: " << pilas[12][0] << '\n';
-}
-int jugadaValidaPilasDeJuego(Pila pila[], int o, int d) {
-    //Evitar casos extremos, evitar que se quite desde pila 1 (reserva).
-    if(d < 2 || o == 1 || o < 0 || o > 8)  return 0;
-
-    //Error si la pila origen esta vacia
-    if(pilaVacia(pila, o)) return 0;
-
-    //Solo se pueden mover en pilas vacias una carta 13.
-    if(pilaVacia(pila, d))
-        if(V[pila[o].top].numeroCarta != 13) return 0;
-
-    if(pilaVacia(pila, d) == 0)	{//Pila no vacia
-        //Error si los colores son iguales
-        if(V[pila[o].top].color == V[pila[d].top].color) return 0;
-        //Error si no son consecutivas
-        if(V[pila[o].top].numeroCarta != (V[pila[d].top].numeroCarta - 1) ) return 0;
-    }
-    //sino
-    return 1;
-}
-int jugadaValidaPilasDeSalida(Pila pila[], int o, int d) {
-    if(d > 12) return 0;
-    if(V[pila[o].top].paloCarta == 'D' && d != 9 ) return 0;
-    if(V[pila[o].top].paloCarta == 'C' && d != 10 ) return 0;
-    if(V[pila[o].top].paloCarta == 'T' && d != 11 ) return 0;
-    if(V[pila[o].top].paloCarta == 'E' && d != 12 ) return 0;
-    if(pilaVacia(pila, d) == 0)//Pila no vacia
-        if(V[pila[o].top].numeroCarta != (V[pila[d].top].numeroCarta + 1) ) return 0;
-
-    return 1;
-}
-int identificarCartaNoTop(Pila pila[], int o, int d, int c) {
-    int indice = -1;
-    for(int i = pila[o].top;  i >= pila[o].base + 1; i--) {
-        if(V[i].estado == 0) break;
-        if(V[i].numeroCarta == c) indice = i;
-    }
-    if(indice != -1) {
-        //printf("%d\n",V[indice].numeroCarta);
-
-        //Si la pila de destino esta vacia, pasar directamente las cartas.
-        if(pilaVacia(pila, d)) return indice;
-        //sino
-        if(V[indice].numeroCarta == (V[pila[d].top].numeroCarta - 1)
-           && V[indice].color != V[pila[d].top].color)
-            return indice;
-    }
-    return -1;//En caso de no encontrar a dicha carta
-}
-void pushVariasCartas(Pila pila[], int o, int d, int c) {
-    Carta temp;
-    int indice = identificarCartaNoTop(pila, o, d, c);
-    if(indice != -1) {
-
-        int count = pila[o].top - indice;
-        Carta cart[count + 1];
-        for(int i = 0; i < count + 1; i++)
-            cart[i] = pop(pila, o, temp);
-
-        for(int i = 0; i < count + 1; i++)
-            push(pila, d, cart[count - i]);
-
-        //Si la pila no esta vacia
-        if(pilaVacia(pila, o) == 0)
-            V[pila[o].top].estado = 1;
-    }
-}
-int lecturaEjecutarOrden(Pila pila[], int *contador) {
-    int o, d, c;
-    char opc;
-    Carta aux;
-
-    if(scanf("%d %d", &o, &d) == 2) {
-        //Verificar jugadas
-        if(d < 9) {
-            //Poner una carta 13 en una pila vacia.
-            if(pilaVacia(pila, d)) {
-                if(V[pila[o].top].numeroCarta == 13) {
-                    aux = pop(pila, o, aux);
-                    push(pila, d, aux);
-                    if(o != 0)
-                        V[pila[o].top].estado = 1;
-                    V[pila[d].top].estado = 1;
-                }
-            }
-            if(jugadaValidaPilasDeJuego(pila, o, d) == 1) {
-
-                aux = pop(pila, o, aux);
-                push(pila, d, aux);
-                V[pila[o].top].estado = 1;
-                V[pila[d].top].estado = 1;
-            }
-        }
-        else {
-            if(jugadaValidaPilasDeSalida(pila, o, d) == 1) {
-                aux = pop(pila, o, aux);
-                push(pila, d, aux);
-                V[pila[o].top].estado = 1;
-                V[pila[d].top].estado = 1;
-            }
-        }
-
-    }
-        //Opciones extras.
-    else if(scanf("%c", &opc) == 1) {
-        //comando para ganar el juego, la letra m.
-        if(opc == 'w' || opc == 'W') {//win
-            return 1; //se gana el juego, flag == 1
-        }
-        if(opc == 'd' || opc == 'D') {//descarte
-            //Si la pila de reserva no esta vacia
-            if(sizePila(pila, 1) != 0 ) {
-                //Si la pila 0 esta vacia, hacer pop a pila 1 y luego push a pila 0.
-                if(pilaVacia(pila, 0) == 1) {
-                    aux = pop(pila, 1, aux);
-                    push(pila, 0, aux);
-                    V[pila[0].top].estado = 1;
-                }
-                    //Si la pila 0 no esta vacia, intercabiar pila 1 con pila 0.
-                else {
-                    (*contador)++;
-                    exchangePosicion(pila, pila[0].top, pila[1].top -
-                                                        (*contador % (sizePila(pila, 1)-1)));
-                    V[pila[0].top].estado = 1;
-                }
-            }
-        }
-        if(opc == 'c') {
-            scanf("%d %d %d", &o, &d, &c);
-            pushVariasCartas(pila, o, d, c);
-        }
-        if(opc == 'n') {
-            system("clear");
-            menuPrincipal(pila);
-        }
-        return 0;
-
-    }
-    if(pila)
-        return 0;
-}
-void menuPrincipal(Pila pila[]) {
-    menuJuego(pila);
-}
-void push(Pila pila[], int i, Carta x) {
-    pilas[13].base = MAX;
-    if(pila[i].top == pila[i+1].base)
-        overflowLocal(pila, i);//reacomoda las pilas, para obtener un espacio disponible.
-
-    pila[i].top = pila[i].top + 1;
-    V[pila[i].top] = x;
-}
-Carta pop(Pila pila[], int i, Carta x) {
-    if(pila[i].top == pila[i].base)
-        x.numeroCarta = 0; //Si la pila esta vacia, retorna 0.
-    else {
-        x = V[pila[i].top];
-        pila[i].top = pila[i].top - 1;
-    }
-    return x;
-}
-void crearCotas(Pila pila[]) {
-    for(int i = 0; i <= 12; i++) //n == 13, ie, las 13 pilas.
-        pila[i].base = pila[i].top = (int)(i * ((float)(MAX) / 13)); //0, 4, 9, 13 ...
-}
-void overflowLocal(Pila pila[], int i) {
-    int j = i;
-
-    int flat = 0;
-    while(pila[j].top < MAX) {
-        j++;
-        if(pila[j].top < pila[j+1].base) {
-            flat = 1; //Si se encontro algun espacio a la derecha
-            break;
-        }
-    }
-
-    if(flat == 1) {
-        //Desplazo una posicion hacia la derecha las pilas (i+1) (i+2) ... j
-        for(int k = pila[j].top; k >= pila[i+1].base + 1; k--) //
-            V[k+1] = V[k];
-
-        //Actualizar topes y bases
-        for(int k = i + 1; k <= j; k++) {
-            pila[k].base = pila[k].base + 1;
-            pila[k].top = pila[k].top + 1;
-        }
-    }
-        //Si no se encontro ningun espacio a la derecha, entonces busco algun espacio a la izquierda
-        //una vez encontrado, muevo las pilas a la izquierda.
-    else {//si flat == 0
-        j = i;
-        while(1) {
-            j--;
-            if(pila[j].top < pila[j+1].base) {
-                break;
-            }
-        }
-        for(int k = pila[j + 1].base; k < pila[i].top; k++)
-            V[k] = V[k + 1];
-
-        //Actualizar topes y bases
-        for(int k = j + 1; k <= i; k++) {
-            pila[k].base = pila[k].base - 1;
-            pila[k].top = pila[k].top - 1;
-        }
-    }
-}
-void mostrarCarta(Pila pila[], int j) {
-    if(V[j].estado == 1)
-        printf("[%d%c]", V[j].numeroCarta, V[j].paloCarta);
-    else
-        printf("[%c%c]", '*', '*');
-}
-
-void printStack(Pila pila[], int i) {
-    for(int j = pila[i].base + 1; j <= pila[i].top; j++)
-        mostrarCarta(pila, j);
-
-    printf("\n");
-}
-void exchange(Carta cartas[], int i, int j) {
-    Carta aux;
-    aux = cartas[i];
-    cartas[i] = cartas[j];
-    cartas[j] = aux;
-}
-void exchangePosicion(Pila pila[], int a, int b) {
-    Carta aux;
-    aux = V[a];
-    V[a] = V[b];
-    V[b] = aux;
-}
-void barajar(Carta aux[]) {
-    int i = 51;
-    while(i >= 0) {
-        srand(time(NULL));
-        if(i == 0) {
-            int randomPosition = rand() % 51 + 1;
-            exchange(aux, randomPosition, i);
-        }
-        else {
-            int randomPosition = rand() % i + 1;
-            exchange(aux, randomPosition, i);
-        }
-        i--;
-    }
-}
-void crearCartas(Carta cartas[]) {
-    int a, b, c;
-    a = b = c = 1;
-    for(int i = 0; i < 52; i++) {
-        if(i <= 12 ) {
-            cartas[i].paloCarta = 'D';// Diamantes
-            cartas[i].color = 1; //color rojo
-            cartas[i].numeroCarta = i + 1;//Asigno desde el 1 al 13.
-        }
-        if(i > 12 && i <= 25) {
-            cartas[i].paloCarta = 'C';// Corazones
-            cartas[i].color = 1; //color rojo
-            cartas[i].numeroCarta = a++;
-        }
-        if(i > 25 && i <= 38) {
-            cartas[i].paloCarta = 'T';// Trebol
-            cartas[i].color = 0; //color negro
-            cartas[i].numeroCarta = b++;
-        }
-        if(i > 38) {
-            cartas[i].paloCarta = 'E';// Espadas
-            cartas[i].color = 0; //color negro
-            cartas[i].numeroCarta = c++;
-        }
-
-    }
-}
-void repartirPilas(Pila pila[]) {
-    crearCotas(pila);
-    Carta cartas[52];//voy a inicializar 52 cartas
-    crearCartas(cartas);//creo las cartas, los 4 mazos.
-    barajar(cartas);//barajo todas las 52 cartas.
+#include <algorithm> //Solo se uso para ordenar las cartas al azar
+#include <random>  //Solo se uso para ordenar las cartas al azar
 
 
-    // Pila descarte vacia
-    // pila[0]
+using namespace std;
 
-    // Pila reserva
-    for(int k = 0; k < 24; k++){
-        push(pila, 1, cartas[k]);
-        V[pila[1].base + k + 1].estado = 0;//El estado == 0, significa estan cerradas, no se ven.
-    }
+struct NodoBarajaInicial{
+    string barajaInicial;
+    NodoBarajaInicial *siguienteBarajaInicial;
+};
+struct NodoBarajaInicial2{
+    string barajaInicial2;
+    NodoBarajaInicial2 *siguienteBarajaInicial2;
+};
+struct NodoBarajaOcultaB{
+    string barajaOcultaB;
+    NodoBarajaOcultaB *siguienteBarajaOcultaB;
+};
+struct NodoBarajaOcultaC{
+    string barajaOcultaC;
+    NodoBarajaOcultaC *siguienteBarajaOcultaC;
+};
+struct NodoBarajaOcultaD{
+    string barajaOcultaD;
+    NodoBarajaOcultaD *siguienteBarajaOcultaD;
+};
+struct NodoBarajaOcultaE{
+    string barajaOcultaE;
+    NodoBarajaOcultaE *siguienteBarajaOcultaE;
+};
+struct NodoBarajaOcultaF{
+    string barajaOcultaF;
+    NodoBarajaOcultaF *siguienteBarajaOcultaF;
+};
+struct NodoBarajaOcultaG{
+    string barajaOcultaG;
+    NodoBarajaOcultaG *siguienteBarajaOcultaG;
+};
+struct NodoBarajaVisibleA{
+    string barajaVisibleA;
+    NodoBarajaVisibleA *siguienteBarajaVisibleA;
+};
+struct NodoBarajaVisibleB{
+    string barajaVisibleB;
+    NodoBarajaVisibleB *siguienteBarajaVisibleB;
+};
+struct NodoBarajaVisibleC{
+    string barajaVisibleC;
+    NodoBarajaVisibleC *siguienteBarajaVisibleC;
+};
+struct NodoBarajaVisibleD{
+    string barajaVisibleD;
+    NodoBarajaVisibleD *siguienteBarajaVisibleD;
+};
+struct NodoBarajaVisibleE{
+    string barajaVisibleE;
+    NodoBarajaVisibleE *siguienteBarajaVisibleE;
+};
+struct NodoBarajaVisibleF{
+    string barajaVisibleF;
+    NodoBarajaVisibleF *siguienteBarajaVisibleF;
+};
+struct NodoBarajaVisibleG{
+    string barajaVisibleG;
+    NodoBarajaVisibleG *siguienteBarajaVisibleG;
+};
 
-    // Pilas de juego.
+void insertarColaBarajaInicial(NodoBarajaInicial *&, NodoBarajaInicial *&, string);
+bool colaBarajaInicial_vacia(NodoBarajaInicial *);
+void eliminarColaBarajaInicial(NodoBarajaInicial *&, NodoBarajaInicial *&, string&);
 
-    int aux = 24;
-    for(int i = 2; i <= 8; i++) {
-        for(int j = 0; j < i-1; j++) {
-            push(pila, i, cartas[aux]);
-            V[pila[i].base + j + 1].estado = 0;
-            aux++;
-        }
-        V[pila[i].top].estado = 1;
-    }
+void insertarColaBarajaInicial2(NodoBarajaInicial2 *&, NodoBarajaInicial2 *&, string);
+bool colaBarajaInicial_vacia2(NodoBarajaInicial2 *);
 
-}
-int sizePila(Pila pila[], int i) {
-    return (pila[i].top - pila[i].base);
-}
-int pilaLLena(Pila pila[], int i) {
-    return sizePila(pila, i) == 13;
-}
-int pilaVacia(Pila pila[], int i) {
-    return pila[i].base == pila[i].top;
-}
-int gano(Pila pila[]) {
-    int k = 0;
-    int i = 9;
-    for(int j = 0; j < 4; j++)
-        if(pilaLLena(pila, i + j)) k++;
+void insertarPilaBarajaOcultaB(NodoBarajaOcultaB *&, string);
+void insertarPilaBarajaOcultaC(NodoBarajaOcultaC *&, string);
+void insertarPilaBarajaOcultaD(NodoBarajaOcultaD *&, string);
+void insertarPilaBarajaOcultaE(NodoBarajaOcultaE *&, string);
+void insertarPilaBarajaOcultaF(NodoBarajaOcultaF *&, string);
+void insertarPilaBarajaOcultaG(NodoBarajaOcultaG *&, string);
 
-    return k == 4 ? 1 : 0;
-}
-void menuJuego(Pila pila[]) {
-    repartirPilas(pila);
-    mostrarPilas(pila);
-    int contador = -1;
-    int flag = 0;
-    while(flag != 1) {
-        printf("Ingrese su jugada: \n");
-        flag = lecturaEjecutarOrden(pila, &contador);
-        mostrarPilas(pila);
-    }
-    printf("GANASTE EL JUEGO!!!, Felicitaciones!\n");
-}
+void insertarPilaBarajaVisibleA(NodoBarajaVisibleA *&, string);
+void insertarPilaBarajaVisibleB(NodoBarajaVisibleB *&, string);
+void insertarPilaBarajaVisibleC(NodoBarajaVisibleC *&, string);
+void insertarPilaBarajaVisibleD(NodoBarajaVisibleD *&, string);
+void insertarPilaBarajaVisibleE(NodoBarajaVisibleE *&, string);
+void insertarPilaBarajaVisibleF(NodoBarajaVisibleF *&, string);
+void insertarPilaBarajaVisibleG(NodoBarajaVisibleG *&, string);
 
 void mostrarJuegoSolitarioC() {
-/*    string cartasOrigen[] = {"1-<3-R", "2-<3-R", "3-<3-R", "4-<3-R", "5-<3-R","6-<3-R","7-<3-R","8-<3-R","9-<3-R","10-<3-R","J-<3-R","Q-<3-R","K-<3-R",
-                              "1-<>-R","2-<>-R","3-<>-R","4-<>-R","5-<>-R","6-<>-R","7-<>-R","8-<>-R","9-<>-R","10-<>-R","J-<>-R","Q-<>-R","K-<>-R",
-                              "1-E3-N","2-E3-N","3-E3-N","4-E3-N","5-E3-N","6-E3-N","7-E3-N","8-E3-N","9-E3-N","10-E3-N","J-E3-N","Q-E3-N", "K-E3-N",
-                              "1-!!-N","2-!!-N","3-!!-N","4-!!-N","5-!!-N","6-!!-N","7-!!-N","8-!!-N","9-!!-N","10-!!-N","J-!!-N","Q-!!-N","K-!!-N"};
+    string cartasOrigen[] = {"01-<3-R", "02-<3-R", "03-<3-R", "04-<3-R", "05-<3-R","06-<3-R","07-<3-R","08-<3-R","09-<3-R","10-<3-R"," J-<3-R"," Q-<3-R"," K-<3-R",
+                             "01-<>-R","02-<>-R","03-<>-R","04-<>-R","05-<>-R","06-<>-R","07-<>-R","08-<>-R","09-<>-R","10-<>-R"," J-<>-R"," Q-<>-R"," K-<>-R",
+                             "01-E3-N","02-E3-N","03-E3-N","04-E3-N","05-E3-N","06-E3-N","07-E3-N","08-E3-N","09-E3-N","10-E3-N"," J-E3-N"," Q-E3-N", " K-E3-N",
+                             "01-!!-N","02-!!-N","03-!!-N","04-!!-N","05-!!-N","06-!!-N","07-!!-N","08-!!-N","09-!!-N","10-!!-N"," J-!!-N"," Q-!!-N"," K-!!-N"};
 
 
     const int tamano = sizeof(cartasOrigen) / sizeof(cartasOrigen[0]);
@@ -477,10 +110,415 @@ void mostrarJuegoSolitarioC() {
     }
     //cout<<"ACA esta"+cartasOrigen2[51];
 
-    //   ---   DEFINIMOS NUESTRA BARAJA PRINCIPAL PILA1
-*/
-    menuPrincipal(pilas);
+    //   ---   DEFINIMOS NUESTRA BARAJA PRINCIPAL COLA1
+
+
+    NodoBarajaInicial *frenteBarajaInicial = NULL;
+    NodoBarajaInicial *finBarajaInicial = NULL;
+
+    NodoBarajaInicial2 *frenteBarajaInicial2 = NULL;
+    NodoBarajaInicial2 *finBarajaInicial2 = NULL;
+
+    const int tamano2 = sizeof(cartasOrigen2) / sizeof(cartasOrigen2[0]);
+
+    int contBarajaInicial;
+    for (contBarajaInicial = 1; contBarajaInicial <= 52; contBarajaInicial++){
+        insertarColaBarajaInicial(frenteBarajaInicial,finBarajaInicial,cartasOrigen2[contBarajaInicial]);
+    }
+
+    NodoBarajaOcultaB *pilaNodoBarajaOcultaB = NULL;
+    NodoBarajaOcultaC *pilaNodoBarajaOcultaC = NULL;
+    NodoBarajaOcultaD *pilaNodoBarajaOcultaD = NULL;
+    NodoBarajaOcultaE *pilaNodoBarajaOcultaE = NULL;
+    NodoBarajaOcultaF *pilaNodoBarajaOcultaF = NULL;
+    NodoBarajaOcultaG *pilaNodoBarajaOcultaG = NULL;
+
+    int ocultoA = 0;
+    int ocultoB = 0;
+    int ocultoC = 0;
+    int ocultoD = 0;
+    int ocultoE = 0;
+    int ocultoF = 0;
+    int ocultoG = 0;
+    insertarPilaBarajaOcultaB(pilaNodoBarajaOcultaB,finBarajaInicial->barajaInicial);ocultoB++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaC(pilaNodoBarajaOcultaC,finBarajaInicial->barajaInicial);ocultoC++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaD(pilaNodoBarajaOcultaD,finBarajaInicial->barajaInicial);ocultoD++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaC(pilaNodoBarajaOcultaC,finBarajaInicial->barajaInicial);ocultoC++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaD(pilaNodoBarajaOcultaD,finBarajaInicial->barajaInicial);ocultoD++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaD(pilaNodoBarajaOcultaD,finBarajaInicial->barajaInicial);ocultoD++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+
+
+    NodoBarajaVisibleA *pilaNodoBarajaVisibleA = NULL;
+    NodoBarajaVisibleB *pilaNodoBarajaVisibleB = NULL;
+    NodoBarajaVisibleC *pilaNodoBarajaVisibleC = NULL;
+    NodoBarajaVisibleD *pilaNodoBarajaVisibleD = NULL;
+    NodoBarajaVisibleE *pilaNodoBarajaVisibleE = NULL;
+    NodoBarajaVisibleF *pilaNodoBarajaVisibleF = NULL;
+    NodoBarajaVisibleG *pilaNodoBarajaVisibleG = NULL;
+
+    int visivleA = 0;
+    int visivleB = 0;
+    int visivleC = 0;
+    int visivleD = 0;
+    int visivleE = 0;
+    int visivleF = 0;
+    int visivleG = 0;
+
+    insertarPilaBarajaVisibleA(pilaNodoBarajaVisibleA,finBarajaInicial->barajaInicial);visivleA++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaVisibleB(pilaNodoBarajaVisibleB,finBarajaInicial->barajaInicial);visivleB++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaVisibleC(pilaNodoBarajaVisibleC,finBarajaInicial->barajaInicial);visivleC++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaVisibleD(pilaNodoBarajaVisibleD,finBarajaInicial->barajaInicial);visivleD++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaVisibleE(pilaNodoBarajaVisibleE,finBarajaInicial->barajaInicial);visivleE++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaVisibleF(pilaNodoBarajaVisibleF,finBarajaInicial->barajaInicial);visivleF++;
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaVisibleG(pilaNodoBarajaVisibleG,finBarajaInicial->barajaInicial);visivleG++;
+
+
+    //DEFINIMOS LA ESTRUCTURA DEL JUEGO
+
+
+
+
+    int opcion;
+
+    do {
+        string matrizOculto[52][7];
+        for(int i=0; i<1; i++){
+            for(int j=0; j< ocultoA; j++){
+                matrizOculto[i][j] = "*******  |  ";
+            }
+        }
+        for(int i=1; i<2; i++){
+            for(int j=0; j< ocultoB; j++){
+                matrizOculto[i][j] = "*******  |  ";
+            }
+        }
+        for(int i=2; i<3; i++){
+            for(int j=0; j< ocultoC; j++){
+                matrizOculto[i][j] = "*******  |  ";
+            }
+        }
+        for(int i=3; i<4; i++){
+            for(int j=0; j< ocultoD; j++){
+                matrizOculto[i][j] = "*******  |  ";
+            }
+        }
+        for(int i=4; i<5; i++){
+            for(int j=0; j< ocultoE; j++){
+                matrizOculto[i][j] = "*******  |  ";
+            }
+        }
+        for(int i=5; i<6; i++){
+            for(int j=0; j< ocultoF; j++){
+                matrizOculto[i][j] = "*******  |  ";
+            }
+        }
+        for(int i=6; i<7; i++){
+            for(int j=0; j< ocultoG; j++){
+                matrizOculto[i][j] = "*******  |  ";
+            }
+        }
+
+        string matriVisible[52][7];
+
+        for(int i=0; i<1; i++){
+            for(int j=0; j< visivleA; j++){
+                matriVisible[i][j] = pilaNodoBarajaVisibleA->barajaVisibleA+"  |  ";
+            }
+        }
+        for(int i=1; i<2; i++){
+            for(int j=0; j< visivleB; j++){
+                matriVisible[i][j] = pilaNodoBarajaVisibleB->barajaVisibleB+"  |  ";
+            }
+        }
+        for(int i=2; i<3; i++){
+            for(int j=0; j< visivleC; j++){
+                matriVisible[i][j] = pilaNodoBarajaVisibleC->barajaVisibleC+"  |  ";
+            }
+        }
+        for(int i=3; i<4; i++){
+            for(int j=0; j< visivleD; j++){
+                matriVisible[i][j] = pilaNodoBarajaVisibleD->barajaVisibleD+"  |  ";
+            }
+        }
+        for(int i=4; i<5; i++){
+            for(int j=0; j< visivleE; j++){
+                matriVisible[i][j] = pilaNodoBarajaVisibleE->barajaVisibleE+"  |  ";
+            }
+        }
+        for(int i=5; i<6; i++){
+            for(int j=0; j< visivleF; j++){
+                matriVisible[i][j] = pilaNodoBarajaVisibleF->barajaVisibleF+"  |  ";
+            }
+        }
+        for(int i=6; i<7; i++){
+            for(int j=0; j< visivleG; j++){
+                matriVisible[i][j] = pilaNodoBarajaVisibleG->barajaVisibleG+"  |  ";
+            }
+        }
+
+
+
+
+        cout<< "\n\n---------------------------------------------------------------------------------\n";
+        cout<< "   A     |     B     |     C     |     D     |     E     |     F     |     G     |\n";
+        cout<< "---------------------------------------------------------------------------------\n";
+
+        if (!colaBarajaInicial_vacia2(frenteBarajaInicial2) & !colaBarajaInicial_vacia(frenteBarajaInicial)) {
+            cout << finBarajaInicial->barajaInicial + "  |  " + finBarajaInicial2->barajaInicial2 + "\n";
+        }else{
+            if (!colaBarajaInicial_vacia2(frenteBarajaInicial2) & colaBarajaInicial_vacia(frenteBarajaInicial)){
+                cout <<"Sin cartas |  " + finBarajaInicial2->barajaInicial2 + "\n";
+            }else{
+                if (colaBarajaInicial_vacia2(frenteBarajaInicial2) & !colaBarajaInicial_vacia(frenteBarajaInicial)){
+                    cout << finBarajaInicial->barajaInicial + "  |" + "Sin cartas\n";
+                }
+            }
+        }
+
+
+        /*if (!colaBarajaInicial_vacia(frenteBarajaInicial)) {
+            cout << finBarajaInicial->barajaInicial + "  |  " + finBarajaInicial2->barajaInicial2 + "\n";
+        } else {
+            cout <<"Sin cartas |  " + finBarajaInicial2->barajaInicial2 + "\n";
+        }*/
+        //cout<<finBarajaInicial->barajaInicial+"  |  "+finBarajaInicial2->barajaInicial2+"\n";
+        cout<< "---------------------------------------------------------------------------------\n";
+        for(int i=0; i<7;i++){
+            for(int j=0;j<ocultoG;j++){
+                cout<<matrizOculto[i][j];
+            }
+            cout<<"\n";
+        }
+        cout<< "---------------------------------------------------------------------------------\n";
+        for(int i=0; i<7;i++){
+            for(int j=0;j<visivleG;j++){
+                cout<<matriVisible[i][j];
+            }
+            cout<<"\n";
+        }
+        cout<< "---------------------------------------------------------------------------------\n\n";
+        cout<< "1--- Siguiente carta.\n";
+        cout<< "2--- Insertar carta.\n";
+        cout<< "3--- Mover carta.\n";
+        cout<< "4--- Regresar movimiento.\n";
+        cout<< "5--- Pista.\n";
+        cout<< "6--- RENDIRSE.\n\n";
+        cout<< "---------------------------------------------------------------------------------\n";
+        cout<< "Su respuesta es: --->";
+
+        try {
+            cin >> opcion;
+
+            if (cin.fail()) {
+                throw invalid_argument("ERROR --- Ingresar solo numeros del 1 al 6.");
+            }
+
+            switch (opcion) {
+                case 1:
+                    insertarColaBarajaInicial2(frenteBarajaInicial2,finBarajaInicial2,finBarajaInicial->barajaInicial);
+                    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+                    break;
+                case 2:
+                    cout << "Insertar Instrucciones...\n";
+
+                    break;
+                case 3:
+                    cout << "Insertar Instrucciones...\n";
+                    break;
+                case 4:
+                    cout << "Insertar Instrucciones...\n";
+                    break;
+                case 5:
+                    cout << "Insertar Instrucciones...\n";
+                    break;
+                case 6:
+                    cout << "\n\n   ----------------------------------------\n";
+                    cout << "   ---        SALIENDO DEL JUEGO        ---\n";
+                    cout << "   ---   Regresando al menu principal   ---\n";
+                    cout << "   ----------------------------------------\n";
+                    break;
+                default:
+                    cout << "ERROR --- Ingresar solo numeros del 1 al 6.\n";
+            }
+        } catch (const std::invalid_argument& e) {
+            cout << e.what() << "\n";
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+
+    } while (opcion != 6);
+
+
+
 }
 
+void insertarColaBarajaInicial(NodoBarajaInicial *&frenteBarajaInicial, NodoBarajaInicial *&finBarajaInicial, string nBarajaInicial){
+    NodoBarajaInicial *nuevoNodoBarajaInicial = new NodoBarajaInicial();
 
+    nuevoNodoBarajaInicial->barajaInicial = nBarajaInicial;
+    nuevoNodoBarajaInicial->siguienteBarajaInicial = NULL;
+    if (colaBarajaInicial_vacia(frenteBarajaInicial)){
+        frenteBarajaInicial = nuevoNodoBarajaInicial;
+    }
+    else{
+        finBarajaInicial->siguienteBarajaInicial = nuevoNodoBarajaInicial;
+    }
+    finBarajaInicial = nuevoNodoBarajaInicial;
+    //cout<<"Elemento    "<<nBarajaInicial<< "     Insertado correctamente\n";
+}
 
+void eliminarColaBarajaInicial(NodoBarajaInicial *&frenteBarajaInicial, NodoBarajaInicial *&finBarajaInicial, string &nBarajaInicial){
+    nBarajaInicial = frenteBarajaInicial->barajaInicial;
+    NodoBarajaInicial *aux = frenteBarajaInicial;
+
+    if(frenteBarajaInicial == finBarajaInicial){
+        frenteBarajaInicial = NULL;
+        finBarajaInicial = NULL;
+    } else{
+        frenteBarajaInicial = frenteBarajaInicial -> siguienteBarajaInicial;
+    }
+    delete aux;
+}
+bool colaBarajaInicial_vacia(NodoBarajaInicial *frenteBarajaInicial){
+    return (frenteBarajaInicial == NULL )? true : false;
+
+}
+void insertarColaBarajaInicial2(NodoBarajaInicial2 *&frenteBarajaInicial2, NodoBarajaInicial2 *&finBarajaInicial2, string nBarajaInicial2){
+    NodoBarajaInicial2 *nuevoNodoBarajaInicial2 = new NodoBarajaInicial2();
+
+    nuevoNodoBarajaInicial2->barajaInicial2 = nBarajaInicial2;
+    nuevoNodoBarajaInicial2->siguienteBarajaInicial2 = NULL;
+    if (colaBarajaInicial_vacia2(frenteBarajaInicial2)){
+        frenteBarajaInicial2 = nuevoNodoBarajaInicial2;
+    }
+    else{
+        finBarajaInicial2->siguienteBarajaInicial2 = nuevoNodoBarajaInicial2;
+    }
+    finBarajaInicial2 = nuevoNodoBarajaInicial2;
+    //cout<<"Elemento    "<<nBarajaInicial2<< "     Insertado correctamente\n";
+}
+
+bool colaBarajaInicial_vacia2(NodoBarajaInicial2 *frenteBarajaInicial2){
+    return (frenteBarajaInicial2 == NULL )? true : false;
+
+}
+void insertarPilaBarajaOcultaB(NodoBarajaOcultaB *&pilaNodoBarajaOcultaB, string nBarajaOcultaB){
+    NodoBarajaOcultaB *nuevoNodoBarajaOcultaB = new NodoBarajaOcultaB();
+    nuevoNodoBarajaOcultaB->barajaOcultaB = nBarajaOcultaB;
+    nuevoNodoBarajaOcultaB->siguienteBarajaOcultaB = pilaNodoBarajaOcultaB;
+    pilaNodoBarajaOcultaB = nuevoNodoBarajaOcultaB;
+}
+void insertarPilaBarajaOcultaC(NodoBarajaOcultaC *&pilaNodoBarajaOcultaC, string nBarajaOcultaC){
+    NodoBarajaOcultaC *nuevoNodoBarajaOcultaC = new NodoBarajaOcultaC();
+    nuevoNodoBarajaOcultaC->barajaOcultaC = nBarajaOcultaC;
+    nuevoNodoBarajaOcultaC->siguienteBarajaOcultaC = pilaNodoBarajaOcultaC;
+    pilaNodoBarajaOcultaC = nuevoNodoBarajaOcultaC;
+}
+void insertarPilaBarajaOcultaD(NodoBarajaOcultaD *&pilaNodoBarajaOcultaD, string nBarajaOcultaD){
+    NodoBarajaOcultaD *nuevoNodoBarajaOcultaD = new NodoBarajaOcultaD();
+    nuevoNodoBarajaOcultaD->barajaOcultaD = nBarajaOcultaD;
+    nuevoNodoBarajaOcultaD->siguienteBarajaOcultaD = pilaNodoBarajaOcultaD;
+    pilaNodoBarajaOcultaD = nuevoNodoBarajaOcultaD;
+}
+void insertarPilaBarajaOcultaE(NodoBarajaOcultaE *&pilaNodoBarajaOcultaE, string nBarajaOcultaE){
+    NodoBarajaOcultaE *nuevoNodoBarajaOcultaE = new NodoBarajaOcultaE();
+    nuevoNodoBarajaOcultaE->barajaOcultaE = nBarajaOcultaE;
+    nuevoNodoBarajaOcultaE->siguienteBarajaOcultaE = pilaNodoBarajaOcultaE;
+    pilaNodoBarajaOcultaE = nuevoNodoBarajaOcultaE;
+}
+void insertarPilaBarajaOcultaF(NodoBarajaOcultaF *&pilaNodoBarajaOcultaF, string nBarajaOcultaF){
+    NodoBarajaOcultaF *nuevoNodoBarajaOcultaF = new NodoBarajaOcultaF();
+    nuevoNodoBarajaOcultaF->barajaOcultaF = nBarajaOcultaF;
+    nuevoNodoBarajaOcultaF->siguienteBarajaOcultaF = pilaNodoBarajaOcultaF;
+    pilaNodoBarajaOcultaF = nuevoNodoBarajaOcultaF;
+}
+void insertarPilaBarajaOcultaG(NodoBarajaOcultaG *&pilaNodoBarajaOcultaG, string nBarajaOcultaG){
+    NodoBarajaOcultaG *nuevoNodoBarajaOcultaG = new NodoBarajaOcultaG();
+    nuevoNodoBarajaOcultaG->barajaOcultaG = nBarajaOcultaG;
+    nuevoNodoBarajaOcultaG->siguienteBarajaOcultaG = pilaNodoBarajaOcultaG;
+    pilaNodoBarajaOcultaG = nuevoNodoBarajaOcultaG;
+}
+void insertarPilaBarajaVisibleA(NodoBarajaVisibleA *&pilaNodoBarajaVisibleA, string nBarajaVisibleA){
+    NodoBarajaVisibleA *nuevoNodoBarajaVisivleA = new NodoBarajaVisibleA();
+    nuevoNodoBarajaVisivleA->barajaVisibleA = nBarajaVisibleA;
+    nuevoNodoBarajaVisivleA->siguienteBarajaVisibleA = pilaNodoBarajaVisibleA;
+    pilaNodoBarajaVisibleA = nuevoNodoBarajaVisivleA;
+}
+void insertarPilaBarajaVisibleB(NodoBarajaVisibleB *&pilaNodoBarajaVisibleB, string nBarajaVisibleB){
+    NodoBarajaVisibleB *nuevoNodoBarajaVisivleB = new NodoBarajaVisibleB();
+    nuevoNodoBarajaVisivleB->barajaVisibleB = nBarajaVisibleB;
+    nuevoNodoBarajaVisivleB->siguienteBarajaVisibleB = pilaNodoBarajaVisibleB;
+    pilaNodoBarajaVisibleB = nuevoNodoBarajaVisivleB;
+}
+void insertarPilaBarajaVisibleC(NodoBarajaVisibleC *&pilaNodoBarajaVisibleC, string nBarajaVisibleC){
+    NodoBarajaVisibleC *nuevoNodoBarajaVisivleC = new NodoBarajaVisibleC();
+    nuevoNodoBarajaVisivleC->barajaVisibleC = nBarajaVisibleC;
+    nuevoNodoBarajaVisivleC->siguienteBarajaVisibleC = pilaNodoBarajaVisibleC;
+    pilaNodoBarajaVisibleC = nuevoNodoBarajaVisivleC;
+}
+void insertarPilaBarajaVisibleD(NodoBarajaVisibleD *&pilaNodoBarajaVisibleD, string nBarajaVisibleD){
+    NodoBarajaVisibleD *nuevoNodoBarajaVisivleD = new NodoBarajaVisibleD();
+    nuevoNodoBarajaVisivleD->barajaVisibleD = nBarajaVisibleD;
+    nuevoNodoBarajaVisivleD->siguienteBarajaVisibleD = pilaNodoBarajaVisibleD;
+    pilaNodoBarajaVisibleD = nuevoNodoBarajaVisivleD;
+}
+void insertarPilaBarajaVisibleE(NodoBarajaVisibleE *&pilaNodoBarajaVisibleE, string nBarajaVisibleE){
+    NodoBarajaVisibleE *nuevoNodoBarajaVisivleE = new NodoBarajaVisibleE();
+    nuevoNodoBarajaVisivleE->barajaVisibleE = nBarajaVisibleE;
+    nuevoNodoBarajaVisivleE->siguienteBarajaVisibleE = pilaNodoBarajaVisibleE;
+    pilaNodoBarajaVisibleE = nuevoNodoBarajaVisivleE;
+}
+void insertarPilaBarajaVisibleF(NodoBarajaVisibleF *&pilaNodoBarajaVisibleF, string nBarajaVisibleF){
+    NodoBarajaVisibleF *nuevoNodoBarajaVisivleF = new NodoBarajaVisibleF();
+    nuevoNodoBarajaVisivleF->barajaVisibleF = nBarajaVisibleF;
+    nuevoNodoBarajaVisivleF->siguienteBarajaVisibleF = pilaNodoBarajaVisibleF;
+    pilaNodoBarajaVisibleF = nuevoNodoBarajaVisivleF;
+}
+void insertarPilaBarajaVisibleG(NodoBarajaVisibleG *&pilaNodoBarajaVisibleG, string nBarajaVisibleG){
+    NodoBarajaVisibleG *nuevoNodoBarajaVisivleG = new NodoBarajaVisibleG();
+    nuevoNodoBarajaVisivleG->barajaVisibleG = nBarajaVisibleG;
+    nuevoNodoBarajaVisivleG->siguienteBarajaVisibleG = pilaNodoBarajaVisibleG;
+    pilaNodoBarajaVisibleG = nuevoNodoBarajaVisivleG;
+}

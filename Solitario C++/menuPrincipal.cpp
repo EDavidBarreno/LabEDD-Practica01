@@ -8,15 +8,15 @@ void mostrarMenuPrincipal() {
     int opcion;
 
     do {
-        std::cout << "\n\n   -------------------------------\n";
-        std::cout << "   ---   BIENBENIDO AL JUEGO   ---\n";
-        std::cout << "   ---     SOLITARIO EN C++    ---\n";
-        std::cout << "   -------------------------------";
-        std::cout << "\n\nA continuacion seleccione una opcion: \n\n";
-        std::cout << "1--- Jugar Solitario en C++.\n";
-        std::cout << "2--- Soporte Tecnico.\n";
-        std::cout << "3--- Salir del sistema.\n\n";
-        std::cout << "Su respuesta es: --->";
+        cout << "\n\n   -------------------------------\n";
+        cout << "   ---   BIENBENIDO AL JUEGO   ---\n";
+        cout << "   ---     SOLITARIO EN C++    ---\n";
+        cout << "   -------------------------------";
+        cout << "\n\nA continuacion seleccione una opcion: \n\n";
+        cout << "1--- Jugar Solitario en C++.\n";
+        cout << "2--- Soporte Tecnico.\n";
+        cout << "3--- Salir del sistema.\n\n";
+        cout << "Su respuesta es: --->";
 
         try {
             std::cin >> opcion;

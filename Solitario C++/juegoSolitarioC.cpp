@@ -133,100 +133,6 @@ void mostrarJuegoSolitarioC() {
     NodoBarajaOcultaF *pilaNodoBarajaOcultaF = NULL;
     NodoBarajaOcultaG *pilaNodoBarajaOcultaG = NULL;
 
-    int ocultoA = 0;
-    int ocultoB = 0;
-    int ocultoC = 0;
-    int ocultoD = 0;
-    int ocultoE = 0;
-    int ocultoF = 0;
-    int ocultoG = 0;
-    string matrizA[6][7];
-    matrizA[0][0] = "         |  ";
-    insertarPilaBarajaOcultaB(pilaNodoBarajaOcultaB,finBarajaInicial->barajaInicial);ocultoB++;
-    matrizA[0][1] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaC(pilaNodoBarajaOcultaC,finBarajaInicial->barajaInicial);ocultoC++;
-    matrizA[0][2] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaD(pilaNodoBarajaOcultaD,finBarajaInicial->barajaInicial);ocultoD++;
-    matrizA[0][3] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
-    matrizA[0][4] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
-    matrizA[0][5] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
-    matrizA[0][6] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaC(pilaNodoBarajaOcultaC,finBarajaInicial->barajaInicial);ocultoC++;
-    matrizA[1][0] = "         |  ";
-    matrizA[1][1] = "         |  ";
-    matrizA[1][2] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaD(pilaNodoBarajaOcultaD,finBarajaInicial->barajaInicial);ocultoD++;
-    matrizA[1][3] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
-    matrizA[1][4] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
-    matrizA[1][5] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
-    matrizA[1][6] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaD(pilaNodoBarajaOcultaD,finBarajaInicial->barajaInicial);ocultoD++;
-    matrizA[2][0] = "         |  ";
-    matrizA[2][1] = "         |  ";
-    matrizA[2][2] = "         |  ";
-    matrizA[2][3] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
-    matrizA[2][4] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
-    matrizA[2][5] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
-    matrizA[2][6] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
-    matrizA[3][0] = "         |  ";
-    matrizA[3][1] = "         |  ";
-    matrizA[3][2] = "         |  ";
-    matrizA[3][3] = "         |  ";
-    matrizA[3][4] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
-    matrizA[3][5] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
-    matrizA[3][6] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
-    matrizA[4][0] = "         |  ";
-    matrizA[4][1] = "         |  ";
-    matrizA[4][2] = "         |  ";
-    matrizA[4][3] = "         |  ";
-    matrizA[4][4] = "         |  ";
-    matrizA[4][5] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
-    matrizA[4][6] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
-    matrizA[5][0] = "         |  ";
-    matrizA[5][1] = "         |  ";
-    matrizA[5][2] = "         |  ";
-    matrizA[5][3] = "         |  ";
-    matrizA[5][4] = "         |  ";
-    matrizA[5][5] = "         |  ";
-    matrizA[5][6] = finBarajaInicial->barajaInicial+"  |  ";
-    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
-
-
     NodoBarajaVisibleA *pilaNodoBarajaVisibleA = NULL;
     NodoBarajaVisibleB *pilaNodoBarajaVisibleB = NULL;
     NodoBarajaVisibleC *pilaNodoBarajaVisibleC = NULL;
@@ -234,6 +140,15 @@ void mostrarJuegoSolitarioC() {
     NodoBarajaVisibleE *pilaNodoBarajaVisibleE = NULL;
     NodoBarajaVisibleF *pilaNodoBarajaVisibleF = NULL;
     NodoBarajaVisibleG *pilaNodoBarajaVisibleG = NULL;
+
+
+    int ocultoA = 0;
+    int ocultoB = 0;
+    int ocultoC = 0;
+    int ocultoD = 0;
+    int ocultoE = 0;
+    int ocultoF = 0;
+    int ocultoG = 0;
 
     int visivleA = 0;
     int visivleB = 0;
@@ -243,27 +158,118 @@ void mostrarJuegoSolitarioC() {
     int visivleF = 0;
     int visivleG = 0;
 
-    string matrizB[1][7];
+    string matrizA[7][7];
+
     insertarPilaBarajaVisibleA(pilaNodoBarajaVisibleA,finBarajaInicial->barajaInicial);visivleA++;
-    matrizB[0][0] = finBarajaInicial->barajaInicial+"  |  ";
+    matrizA[0][0] = finBarajaInicial->barajaInicial+"  |  ";
     eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaB(pilaNodoBarajaOcultaB,finBarajaInicial->barajaInicial);ocultoB++;
+    matrizA[0][1] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaC(pilaNodoBarajaOcultaC,finBarajaInicial->barajaInicial);ocultoC++;
+    matrizA[0][2] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaD(pilaNodoBarajaOcultaD,finBarajaInicial->barajaInicial);ocultoD++;
+    matrizA[0][3] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
+    matrizA[0][4] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    matrizA[0][5] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    matrizA[0][6] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+
     insertarPilaBarajaVisibleB(pilaNodoBarajaVisibleB,finBarajaInicial->barajaInicial);visivleB++;
-    matrizB[0][1] = finBarajaInicial->barajaInicial+"  |  ";
+    matrizA[1][0] ="            ";
+    matrizA[1][1] = finBarajaInicial->barajaInicial+"  |  ";
     eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaC(pilaNodoBarajaOcultaC,finBarajaInicial->barajaInicial);ocultoC++;
+    matrizA[1][2] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaD(pilaNodoBarajaOcultaD,finBarajaInicial->barajaInicial);ocultoD++;
+    matrizA[1][3] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
+    matrizA[1][4] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    matrizA[1][5] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    matrizA[1][6] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+
     insertarPilaBarajaVisibleC(pilaNodoBarajaVisibleC,finBarajaInicial->barajaInicial);visivleC++;
-    matrizB[0][2] = finBarajaInicial->barajaInicial+"  |  ";
+    matrizA[2][0] ="            ";
+    matrizA[2][1] ="            ";
+    matrizA[2][2] = finBarajaInicial->barajaInicial+"  |  ";
     eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaD(pilaNodoBarajaOcultaD,finBarajaInicial->barajaInicial);ocultoD++;
+    matrizA[2][3] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
+    matrizA[2][4] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    matrizA[2][5] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    matrizA[2][6] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+
     insertarPilaBarajaVisibleD(pilaNodoBarajaVisibleD,finBarajaInicial->barajaInicial);visivleD++;
-    matrizB[0][3] = finBarajaInicial->barajaInicial+"  |  ";
+    matrizA[3][0] ="            ";
+    matrizA[3][1] ="            ";
+    matrizA[3][2] ="            ";
+    matrizA[3][3] = finBarajaInicial->barajaInicial+"  |  ";
     eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaE(pilaNodoBarajaOcultaE,finBarajaInicial->barajaInicial);ocultoE++;
+    matrizA[3][4] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    matrizA[3][5] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    matrizA[3][6] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+
     insertarPilaBarajaVisibleE(pilaNodoBarajaVisibleE,finBarajaInicial->barajaInicial);visivleE++;
-    matrizB[0][4] = finBarajaInicial->barajaInicial+"  |  ";
+    matrizA[4][0] ="            ";
+    matrizA[4][1] ="            ";
+    matrizA[4][2] ="            ";
+    matrizA[4][3] ="            ";
+    matrizA[4][4] = finBarajaInicial->barajaInicial+"  |  ";
     eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaF(pilaNodoBarajaOcultaF,finBarajaInicial->barajaInicial);ocultoF++;
+    matrizA[4][5] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    matrizA[4][6] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+
     insertarPilaBarajaVisibleF(pilaNodoBarajaVisibleF,finBarajaInicial->barajaInicial);visivleF++;
-    matrizB[0][5] = finBarajaInicial->barajaInicial+"  |  ";
+    matrizA[5][0] ="            ";
+    matrizA[5][1] ="            ";
+    matrizA[5][2] ="            ";
+    matrizA[5][3] ="            ";
+    matrizA[5][4] ="            ";
+    matrizA[5][5] = finBarajaInicial->barajaInicial+"  |  ";
     eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+    insertarPilaBarajaOcultaG(pilaNodoBarajaOcultaG,finBarajaInicial->barajaInicial);ocultoG++;
+    matrizA[5][6] ="*******  |  ";
+    eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
+
     insertarPilaBarajaVisibleG(pilaNodoBarajaVisibleG,finBarajaInicial->barajaInicial);visivleG++;
-    matrizB[0][6] = finBarajaInicial->barajaInicial+"  |  ";
+    matrizA[6][0] ="            ";
+    matrizA[6][1] ="            ";
+    matrizA[6][2] ="            ";
+    matrizA[6][3] ="            ";
+    matrizA[6][4] ="            ";
+    matrizA[6][5] ="            ";
+    matrizA[6][6] = finBarajaInicial->barajaInicial+"  |  ";
     eliminarColaBarajaInicial(frenteBarajaInicial, finBarajaInicial, finBarajaInicial->barajaInicial);
 
 
@@ -292,6 +298,7 @@ void mostrarJuegoSolitarioC() {
         }
 
 
+
         /*if (!colaBarajaInicial_vacia(frenteBarajaInicial)) {
             cout << finBarajaInicial->barajaInicial + "  |  " + finBarajaInicial2->barajaInicial2 + "\n";
         } else {
@@ -299,17 +306,9 @@ void mostrarJuegoSolitarioC() {
         }*/
         //cout<<finBarajaInicial->barajaInicial+"  |  "+finBarajaInicial2->barajaInicial2+"\n";
         cout<< "---------------------------------------------------------------------------------\n";
-        for (int i = 0; i < 6; ++i) {
+        for (int i = 0; i < 7; ++i) {
             for (int j = 0; j < 7; ++j) {
                 cout << matrizA[i][j];
-            }
-            cout << endl;
-        }
-
-        cout<< "---------------------------------------------------------------------------------\n";
-        for (int i = 0; i < 1; ++i) {
-            for (int j = 0; j < 7; ++j) {
-                cout << matrizB[i][j];
             }
             cout << endl;
         }

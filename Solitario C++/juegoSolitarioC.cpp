@@ -277,12 +277,12 @@ void mostrarJuegoSolitarioC() {
 
     //DEFINIMOS LA ESTRUCTURA DEL JUEGO
 
-
+    int filas=7;
     int opcion;
 
 
     do {
-
+        string matrizAuxiliar[filas][7];
         cout<< "\n\n---------------------------------------------------------------------------------\n";
         cout<< "   A     |     B     |     C     |     D     |     E     |     F     |     G     |\n";
         cout<< "---------------------------------------------------------------------------------\n";
@@ -373,26 +373,408 @@ void mostrarJuegoSolitarioC() {
                                         string ultimo_valor2 = cadena2.substr(posb + 1);
 
 
-                                        a = stoi(primer_valor);
-                                        b = stoi(primer_valor2);
+                                        //a = stoi(primer_valor);
+                                        //b = stoi(primer_valor2);
 
                                         // Comparación de los valores enteros
-                                        if (a > b || primer_valor ==" J" & primer_valor2 ==" K") {
-                                            cout<<"No se puede insertar aca, por favor elija otra opcion";
-                                        }else{if(a<b & ultimo_valor!= ultimo_valor2 || primer_valor == " J" & primer_valor2 ==" Q" & ultimo_valor!= ultimo_valor2 || primer_valor == " Q" & primer_valor2 ==" K" & ultimo_valor!= ultimo_valor2){
-                                            cout<<"si se puede";
-                                        }else{
+                                        if (primer_valor == " J" && primer_valor2 ==" Q"||primer_valor ==" Q" && primer_valor2 == " K"){
+                                            cout<<"Si se puede\n";
 
-                                        }
+                                            if(visivleA+ocultoA <= filas){
+
+                                                for (int i = 0; i < visivleA+ocultoA; i++) {
+                                                    for (int j = 0; j < 7; j++) {
+                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                    }
+                                                }matrizAuxiliar[visivleA+ocultoA][0]=finBarajaInicial->barajaInicial;
+                                                for (int i = visivleA+ocultoA+1; i < filas; i++) {
+                                                    for (int j = 0; j < 7; j++) {
+                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                    }
+                                                }
+
+                                            }
+                                            for (int i = 0; i < filas; i++) {
+                                                for (int j = 0; j < 7; j++) {
+                                                    matrizA[i][j] = matrizAuxiliar[i][j];
+                                                }
+                                            }
+
+                                        }else{
+                                            if(primer_valor ==" J" && primer_valor2 != " Q"||primer_valor ==" Q" && primer_valor2 != " K"||primer_valor ==" K"){
+                                                cout<<"No se puede\n";
+                                            }else{
+                                                cout<<"No se puede\n";
+                                                if(a = stoi(primer_valor) && primer_valor2 == " J"){
+                                                    cout<<"No se puede\n";
+                                                } else{
+                                                    if(a = stoi(primer_valor) && primer_valor2 == " Q"){
+                                                        cout<<"No se puede\n";
+                                                    } else{
+                                                        if(a = stoi(primer_valor) && primer_valor2 == " K"){
+                                                            cout<<"No se puede\n";
+                                                        }else{
+                                                            if(b = stoi(primer_valor2) && primer_valor == " J"){
+                                                                cout<<"No se puede\n";
+                                                            }else{
+                                                                if(b = stoi(primer_valor2) && primer_valor == " Q"){
+                                                                    cout<<"No se puede\n";
+                                                                }else{
+                                                                    if(b = stoi(primer_valor2) && primer_valor == " K"){
+                                                                        cout<<"No se puede\n";
+                                                                    }else{
+                                                                        a = stoi(primer_valor);
+                                                                        b = stoi(primer_valor2);
+                                                                        if(b-a == 1){
+                                                                            cout<<"Si se puede\n";
+                                                                            if(visivleA+ocultoA <= filas){
+
+                                                                                for (int i = 0; i < visivleA+ocultoA; i++) {
+                                                                                    for (int j = 0; j < 7; j++) {
+                                                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                                                    }
+                                                                                }matrizAuxiliar[visivleA+ocultoA][0]=finBarajaInicial->barajaInicial;
+                                                                                for (int i = visivleA+ocultoA+1; i < filas; i++) {
+                                                                                    for (int j = 0; j < 7; j++) {
+                                                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                                                    }
+                                                                                }
+
+                                                                            }
+                                                                            for (int i = 0; i < filas; i++) {
+                                                                                for (int j = 0; j < 7; j++) {
+                                                                                    matrizA[i][j] = matrizAuxiliar[i][j];
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
 
                                     }
                                     break;
                                 case 2:
+                                    if(0<=visivleB){
+                                        int abc1 = visivleB+ocultoB;
+                                        string cadena = finBarajaInicial->barajaInicial;
+                                        size_t pos = cadena.find("-");
+                                        string primer_valor = cadena.substr(0, pos);
+                                        int a;
+                                        size_t posa = cadena.find_last_of("-");
+                                        string ultimo_valor = cadena.substr(posa + 1);
+
+
+                                        string cadena2 = matrizA[1][abc1-1];
+                                        size_t pos2 = cadena2.find("-");
+                                        string primer_valor2 = cadena2.substr(0, pos);
+                                        cout << "El primer valor es: " << primer_valor <<endl;
+                                        cout << "El primer valor es: " << primer_valor2 <<endl;
+                                        int b;
+                                        size_t posb = cadena2.find_last_of("-");
+                                        string ultimo_valor2 = cadena2.substr(posb + 1);
+
+
+                                        //a = stoi(primer_valor);
+                                        //b = stoi(primer_valor2);
+
+                                        // Comparación de los valores enteros
+                                        if (primer_valor == " J" && primer_valor2 ==" Q"||primer_valor ==" Q" && primer_valor2 == " K"){
+                                            cout<<"Si se puede\n";
+
+                                            if(abc1 <= filas){
+
+                                                for (int i = 0; i < abc1; i++) {
+                                                    for (int j = 0; j < 7; j++) {
+                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                    }
+                                                }matrizAuxiliar[abc1][0]=finBarajaInicial->barajaInicial;
+                                                for (int i = abc1+1; i < filas; i++) {
+                                                    for (int j = 0; j < 7; j++) {
+                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                    }
+                                                }
+
+                                            }
+                                            for (int i = 0; i < filas; i++) {
+                                                for (int j = 0; j < 7; j++) {
+                                                    matrizA[i][j] = matrizAuxiliar[i][j];
+                                                }
+                                            }
+
+                                        }else{
+                                            if(primer_valor ==" J" && primer_valor2 != " Q"||primer_valor ==" Q" && primer_valor2 != " K"||primer_valor ==" K"){
+                                                cout<<"No se puede\n";
+                                            }else{
+                                                cout<<"No se puede\n";
+                                                if(a = stoi(primer_valor) && primer_valor2 == " J"){
+                                                    cout<<"No se puede\n";
+                                                } else{
+                                                    if(a = stoi(primer_valor) && primer_valor2 == " Q"){
+                                                        cout<<"No se puede\n";
+                                                    } else{
+                                                        if(a = stoi(primer_valor) && primer_valor2 == " K"){
+                                                            cout<<"No se puede\n";
+                                                        }else{
+                                                            if(b = stoi(primer_valor2) && primer_valor == " J"){
+                                                                cout<<"No se puede\n";
+                                                            }else{
+                                                                if(b = stoi(primer_valor2) && primer_valor == " Q"){
+                                                                    cout<<"No se puede\n";
+                                                                }else{
+                                                                    if(b = stoi(primer_valor2) && primer_valor == " K"){
+                                                                        cout<<"No se puede\n";
+                                                                    }else{
+                                                                        a = stoi(primer_valor);
+                                                                        b = stoi(primer_valor2);
+                                                                        if(b-a == 1){
+                                                                            cout<<"Si se puede\n";
+                                                                            if(abc1 <= filas){
+
+                                                                                for (int i = 0; i < abc1; i++) {
+                                                                                    for (int j = 0; j < 7; j++) {
+                                                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                                                    }
+                                                                                }matrizAuxiliar[abc1][0]=finBarajaInicial->barajaInicial;
+                                                                                for (int i = abc1+1; i < filas; i++) {
+                                                                                    for (int j = 0; j < 7; j++) {
+                                                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                                                    }
+                                                                                }
+
+                                                                            }
+                                                                            for (int i = 0; i < filas; i++) {
+                                                                                for (int j = 0; j < 7; j++) {
+                                                                                    matrizA[i][j] = matrizAuxiliar[i][j];
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
                                     break;
                                 case 3:
+                                    if(0<=visivleC){
+                                        int abc1 = visivleC+ocultoC;
+                                        string cadena = finBarajaInicial->barajaInicial;
+                                        size_t pos = cadena.find("-");
+                                        string primer_valor = cadena.substr(0, pos);
+                                        int a;
+                                        size_t posa = cadena.find_last_of("-");
+                                        string ultimo_valor = cadena.substr(posa + 1);
+
+
+                                        string cadena2 = matrizA[2][abc1-1];
+                                        size_t pos2 = cadena2.find("-");
+                                        string primer_valor2 = cadena2.substr(0, pos);
+                                        cout << "El primer valor es: " << primer_valor <<endl;
+                                        cout << "El primer valor es: " << primer_valor2 <<endl;
+                                        int b;
+                                        size_t posb = cadena2.find_last_of("-");
+                                        string ultimo_valor2 = cadena2.substr(posb + 1);
+
+
+                                        //a = stoi(primer_valor);
+                                        //b = stoi(primer_valor2);
+
+                                        // Comparación de los valores enteros
+                                        if (primer_valor == " J" && primer_valor2 ==" Q"||primer_valor ==" Q" && primer_valor2 == " K"){
+                                            cout<<"Si se puede\n";
+
+                                            if(abc1 <= filas){
+
+                                                for (int i = 0; i < abc1; i++) {
+                                                    for (int j = 0; j < 7; j++) {
+                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                    }
+                                                }matrizAuxiliar[abc1][0]=finBarajaInicial->barajaInicial;
+                                                for (int i = abc1+1; i < filas; i++) {
+                                                    for (int j = 0; j < 7; j++) {
+                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                    }
+                                                }
+
+                                            }
+                                            for (int i = 0; i < filas; i++) {
+                                                for (int j = 0; j < 7; j++) {
+                                                    matrizA[i][j] = matrizAuxiliar[i][j];
+                                                }
+                                            }
+
+                                        }else{
+                                            if(primer_valor ==" J" && primer_valor2 != " Q"||primer_valor ==" Q" && primer_valor2 != " K"||primer_valor ==" K"){
+                                                cout<<"No se puede\n";
+                                            }else{
+                                                cout<<"No se puede\n";
+                                                if(a = stoi(primer_valor) && primer_valor2 == " J"){
+                                                    cout<<"No se puede\n";
+                                                } else{
+                                                    if(a = stoi(primer_valor) && primer_valor2 == " Q"){
+                                                        cout<<"No se puede\n";
+                                                    } else{
+                                                        if(a = stoi(primer_valor) && primer_valor2 == " K"){
+                                                            cout<<"No se puede\n";
+                                                        }else{
+                                                            if(b = stoi(primer_valor2) && primer_valor == " J"){
+                                                                cout<<"No se puede\n";
+                                                            }else{
+                                                                if(b = stoi(primer_valor2) && primer_valor == " Q"){
+                                                                    cout<<"No se puede\n";
+                                                                }else{
+                                                                    if(b = stoi(primer_valor2) && primer_valor == " K"){
+                                                                        cout<<"No se puede\n";
+                                                                    }else{
+                                                                        a = stoi(primer_valor);
+                                                                        b = stoi(primer_valor2);
+                                                                        if(b-a == 1){
+                                                                            cout<<"Si se puede\n";
+                                                                            if(abc1 <= filas){
+
+                                                                                for (int i = 0; i < abc1; i++) {
+                                                                                    for (int j = 0; j < 7; j++) {
+                                                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                                                    }
+                                                                                }matrizAuxiliar[abc1][0]=finBarajaInicial->barajaInicial;
+                                                                                for (int i = abc1+1; i < filas; i++) {
+                                                                                    for (int j = 0; j < 7; j++) {
+                                                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                                                    }
+                                                                                }
+
+                                                                            }
+                                                                            for (int i = 0; i < filas; i++) {
+                                                                                for (int j = 0; j < 7; j++) {
+                                                                                    matrizA[i][j] = matrizAuxiliar[i][j];
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
                                     break;
                                 case 4:
+                                    if(0<=visivleD){
+                                        int abc1 = visivleD+ocultoD;
+                                        string cadena = finBarajaInicial->barajaInicial;
+                                        size_t pos = cadena.find("-");
+                                        string primer_valor = cadena.substr(0, pos);
+                                        int a;
+                                        size_t posa = cadena.find_last_of("-");
+                                        string ultimo_valor = cadena.substr(posa + 1);
+
+
+                                        string cadena2 = matrizA[3][abc1-1];
+                                        size_t pos2 = cadena2.find("-");
+                                        string primer_valor2 = cadena2.substr(0, pos);
+                                        cout << "El primer valor es: " << primer_valor <<endl;
+                                        cout << "El primer valor es: " << primer_valor2 <<endl;
+                                        int b;
+                                        size_t posb = cadena2.find_last_of("-");
+                                        string ultimo_valor2 = cadena2.substr(posb + 1);
+
+
+                                        //a = stoi(primer_valor);
+                                        //b = stoi(primer_valor2);
+
+                                        // Comparación de los valores enteros
+                                        if (primer_valor == " J" && primer_valor2 ==" Q"||primer_valor ==" Q" && primer_valor2 == " K"){
+                                            cout<<"Si se puede\n";
+
+                                            if(abc1 <= filas){
+
+                                                for (int i = 0; i < abc1; i++) {
+                                                    for (int j = 0; j < 7; j++) {
+                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                    }
+                                                }matrizAuxiliar[abc1][0]=finBarajaInicial->barajaInicial;
+                                                for (int i = abc1+1; i < filas; i++) {
+                                                    for (int j = 0; j < 7; j++) {
+                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                    }
+                                                }
+
+                                            }
+                                            for (int i = 0; i < filas; i++) {
+                                                for (int j = 0; j < 7; j++) {
+                                                    matrizA[i][j] = matrizAuxiliar[i][j];
+                                                }
+                                            }
+
+                                        }else{
+                                            if(primer_valor ==" J" && primer_valor2 != " Q"||primer_valor ==" Q" && primer_valor2 != " K"||primer_valor ==" K"){
+                                                cout<<"No se puede\n";
+                                            }else{
+                                                cout<<"No se puede\n";
+                                                if(a = stoi(primer_valor) && primer_valor2 == " J"){
+                                                    cout<<"No se puede\n";
+                                                } else{
+                                                    if(a = stoi(primer_valor) && primer_valor2 == " Q"){
+                                                        cout<<"No se puede\n";
+                                                    } else{
+                                                        if(a = stoi(primer_valor) && primer_valor2 == " K"){
+                                                            cout<<"No se puede\n";
+                                                        }else{
+                                                            if(b = stoi(primer_valor2) && primer_valor == " J"){
+                                                                cout<<"No se puede\n";
+                                                            }else{
+                                                                if(b = stoi(primer_valor2) && primer_valor == " Q"){
+                                                                    cout<<"No se puede\n";
+                                                                }else{
+                                                                    if(b = stoi(primer_valor2) && primer_valor == " K"){
+                                                                        cout<<"No se puede\n";
+                                                                    }else{
+                                                                        a = stoi(primer_valor);
+                                                                        b = stoi(primer_valor2);
+                                                                        if(a-b == 1){
+                                                                            cout<<"Si se puede\n";
+                                                                            if(abc1 <= filas){
+
+                                                                                for (int i = 0; i < abc1; i++) {
+                                                                                    for (int j = 0; j < 7; j++) {
+                                                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                                                    }
+                                                                                }matrizAuxiliar[abc1][0]=finBarajaInicial->barajaInicial;
+                                                                                for (int i = abc1+1; i < filas; i++) {
+                                                                                    for (int j = 0; j < 7; j++) {
+                                                                                        matrizAuxiliar[i][j] = matrizA[i][j];
+                                                                                    }
+                                                                                }
+
+                                                                            }
+                                                                            for (int i = 0; i < filas; i++) {
+                                                                                for (int j = 0; j < 7; j++) {
+                                                                                    matrizA[i][j] = matrizAuxiliar[i][j];
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
                                     break;
                                 case 5:
                                     break;

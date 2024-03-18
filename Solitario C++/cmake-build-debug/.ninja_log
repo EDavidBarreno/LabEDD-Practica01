@@ -1,0 +1,9 @@
+# ninja log v5
+9	103	7316713362400058	CMakeFiles/Solitario_C__.dir/main.cpp.obj	9d78d1b54cca3f60
+3	1128	7323413450521408	CMakeFiles/Solitario_C__.dir/juegoSolitarioC.cpp.obj	916a44b3d6e817bc
+1129	1249	7323413451681538	Solitario_C__.exe	d41f8eab81644773
+4	1511	7322870117504295	CMakeFiles/Solitario_C__.dir/menuPrincipal.cpp.obj	95ecf95534a84c63
+13	844	7316713369907672	CMakeFiles/Solitario_C__.dir/menuPrincipalSolitario.cpp.obj	3f856ff42cf602c8
+1	125	7323431111965606	build.ninja	cfe3c356a04ef9e1
+3	2641	7324311792281223	CMakeFiles/Solitario_C__.dir/juegoSolitarioC.cpp.obj	916a44b3d6e817bc
+2641	3589	7324311801732304	Solitario_C__.exe	d41f8eab81644773

@@ -1,3 +1,0 @@
-C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Practica01/LabEDD-Practica01-V2/Solitario C++/cmake-build-debug/CMakeFiles/Solitario_C__.dir
-C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Practica01/LabEDD-Practica01-V2/Solitario C++/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/david/Documents/CUNOC/Ingenieria en Ciencias y Sistemas/2024/01-Senestre/Estructura de Datos/Lab - EDD/Practica 01/Practica01/LabEDD-Practica01-V2/Solitario C++/cmake-build-debug/CMakeFiles/rebuild_cache.dir

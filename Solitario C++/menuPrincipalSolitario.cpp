@@ -30,11 +30,7 @@ void mostrarMenuPrincipalSolitario() {
                     mostrarJuegoSolitarioC();
                     break;
                 case 2:
-                    cout << "   ---   Instrucciones   ---\n\n";
-                    cout << "El juego es practicamente muy dinamico, no necesita mayor informacion.\n";
-                    cout << "Puntos a tomar en cuenta: \n";
-                    cout << "Unicamente se puede cologar una carta de menor valor por debajo de otra.\n";
-                    cout << "Solo se aceptan colores intercalados entre cartas.\n";
+                    cout << "Insertar Instrucciones...\n";
                     break;
                 case 3:
                     cout << "\n\n   ----------------------------------------\n";
